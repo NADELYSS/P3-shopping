@@ -1,4 +1,4 @@
-import { Controller, Post, Param } from '@nestjs/common';
+import { Controller, Post, Param, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('users')  // /users 경로 관리
@@ -22,4 +22,19 @@ export class UserController {
     ) {
         return this.userService.addToCart(userId, productId); // 서비스 호출
     }
+
+    @Get()
+    gettest(): string {
+        console.log('확인 log');
+        return;
+    }
 }
+
+// @Controller('log')
+// export class testController {
+//     @Get()
+//     gettest(): string {
+//         console.log('확인 log');
+//         return;
+//     }
+// }
