@@ -4,7 +4,7 @@ import { UserModule } from './modules/user-bag/user.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/shopping-app'),
+    MongooseModule.forRoot('mongodb+srv://nadelyss:1205@shopping.ticjj.mongodb.net/?retryWrites=true&w=majority&appName=shopping'),
     UserModule,
   ],
 })

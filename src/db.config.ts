@@ -1,6 +1,6 @@
 // db.config.ts
 export default () => (
     {
-        uri: 'mongodb://localhost:27017/shopping-app',
+        uri: 'mongodb+srv://nadelyss:1205@shopping.ticjj.mongodb.net/?retryWrites=true&w=majority&appName=shopping',
     }
 )
