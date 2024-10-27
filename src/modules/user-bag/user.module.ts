@@ -1,15 +1,17 @@
+// src/modules/user/user.module.ts
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose'; // Mongoose를 이용해 MongoDB 연결
-import { UserService } from './user.service'; // 사용자 관련 서비스
-import { UserController } from './user.controller'; // 사용자 관련 API 컨트롤러
-import { User, UserSchema } from './schemas/user.schema'; // 사용자 스키마
+import { MongooseModule } from '@nestjs/mongoose';
+import { User, UserSchema } from './schemas/user.schema'; // User 스키마 임포트
+import { UserService } from './user.service'; // User 서비스 임포트
+import { UserController } from './user.controller'; // User 컨트롤러 임포트
+import { Product, ProductSchema } from '../product/schemas/product.schema'; // Product 스키마 임포트
 
 @Module({
     imports: [
-        // User 스키마를 MongoDB와 연결
-        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), // User 모델 등록
+        MongooseModule.forFeature([{ name: Product.name, schema: ProductSchema }]), // Product 모델 등록
     ],
-    controllers: [UserController], // User 관련 API 컨트롤러 등록
-    providers: [UserService],
+    controllers: [UserController], // User 컨트롤러 등록
+    providers: [UserService], // User 서비스 등록
 })
 export class UserModule { }
