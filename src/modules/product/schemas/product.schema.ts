@@ -4,20 +4,21 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class Product extends Document {
-    @Prop({ required: true }) // 필수: 상품 이름
-    name: string;
+  @Prop({ required: true }) // 필수: 상품 이름
+  name: string;
 
-    @Prop({ required: true }) // 필수: 상품 가격
-    price: number;
+  @Prop({ required: true }) // 필수: 가격
+  price: number;
 
-    @Prop({ required: false }) // 필수: 이미지 파일 URL
-    image: string;
+  @Prop({ required: false }) // 선택: 이미지 URL
+  imageUrl?: string;
 
-    @Prop({ type: [String] }) // 상품 태그
-    tags: string[];
+  @Prop({ type: [String] }) // 문자열 배열로 태그 설정
+  tags: string[];
 
-    @Prop({ required: true }) // 필수: 상품 공급사
-    supplier: string;
+  @Prop({ required: true }) // 필수: 공급사 이름
+  supplier: string;
 }
 
+// Product 스키마 생성
 export const ProductSchema = SchemaFactory.createForClass(Product);
