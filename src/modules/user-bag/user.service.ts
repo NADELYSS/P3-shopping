@@ -8,8 +8,8 @@ import { Product } from '../product/schemas/product.schema';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>, // User 모델
-    @InjectModel(Product.name) private productModel: Model<Product>, // Product 모델
+    @InjectModel(User.name) private userModel: Model<User>, // User 모델 주입
+    @InjectModel(Product.name) private productModel: Model<Product>, // Product 모델 주입
   ) {}
 
   // 사용자 생성
@@ -18,56 +18,57 @@ export class UserService {
     return user.save();
   }
 
-  // 사용자 ID로 조회
-  async findUserById(userId: string): Promise<User> {
-    const user = await this.userModel.findById(userId);
-    if (!user) throw new NotFoundException('사용자를 찾을 수 없습니다.');
-    return user;
-  }
-
-  // 찜 목록에 제품 추가
-  async addToWishlist(userId: string, productId: string) {
+  // 찜 목록에 아이템 추가
+  async addToWishlist(userId: string, productId: string, name: string, active: boolean = true) {
     const user = await this.userModel.findById(userId);
     if (!user) throw new NotFoundException('사용자를 찾을 수 없습니다.');
 
     const product = await this.productModel.findById(productId);
     if (!product) throw new NotFoundException('상품을 찾을 수 없습니다.');
 
-    user.wishlist.push(product._id as Types.ObjectId);
+    user.wishlist.push({ productId: product._id as Types.ObjectId, name, active });
     return user.save();
   }
 
-  // 장바구니에 제품 추가
-  async addToCart(userId: string, productId: string) {
+  // 장바구니에 아이템 추가
+  async addToCart(userId: string, productId: string, name: string, active: boolean = true) {
     const user = await this.userModel.findById(userId);
     if (!user) throw new NotFoundException('사용자를 찾을 수 없습니다.');
 
     const product = await this.productModel.findById(productId);
     if (!product) throw new NotFoundException('상품을 찾을 수 없습니다.');
 
-    user.cart.push(product._id as Types.ObjectId);
+    user.cart.push({ productId: product._id as Types.ObjectId, name, active });
     return user.save();
   }
 
   // 찜 목록 조회
-  async getWishlist(userId: string) {
+  async getWishlist(userId: string, isActive: boolean) {
     const user = await this.userModel
       .findById(userId)
-      .populate('wishlist', '_id name price imageUrl tags supplier')
+      .populate({
+        path: 'wishlist.productId',
+        select: '_id name price imageUrl tags supplier'
+      })
       .exec();
 
     if (!user) throw new NotFoundException('사용자를 찾을 수 없습니다.');
-    return user.wishlist;
+
+    return user.wishlist.filter(item => item.active === isActive);
   }
 
   // 장바구니 목록 조회
-  async getCart(userId: string) {
+  async getCart(userId: string, isActive: boolean) {
     const user = await this.userModel
       .findById(userId)
-      .populate('cart', '_id name price imageUrl tags supplier')
+      .populate({
+        path: 'cart.productId',
+        select: '_id name price imageUrl tags supplier'
+      })
       .exec();
 
     if (!user) throw new NotFoundException('사용자를 찾을 수 없습니다.');
-    return user.cart;
+
+    return user.cart.filter(item => item.active === isActive);
   }
 }

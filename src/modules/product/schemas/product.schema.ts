@@ -13,7 +13,7 @@ export class Product extends Document {
   @Prop({ required: false }) // 선택: 이미지 URL
   imageUrl?: string;
 
-  @Prop({ type: [String] }) // 문자열 배열로 태그 설정
+  @Prop({ type: [String] }) // 태그 배열
   tags: string[];
 
   @Prop({ required: true }) // 필수: 공급사 이름
