@@ -20,4 +20,10 @@ export class ProductService {
     if (!product) throw new NotFoundException('상품을 찾을 수 없습니다.');
     return product;
   }
+
+  // 모든 제품 가져오기
+  async findAll(): Promise<Product[]> {
+    return this.productModel.find().exec();
+  }
+  
 }
